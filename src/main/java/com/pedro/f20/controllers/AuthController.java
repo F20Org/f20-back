@@ -21,7 +21,7 @@ public class AuthController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<ResponseDTO> register(@RequestBody UserRegisterDTO data) {
         UserRegisterDTO processedData = new UserRegisterDTO(
             data.username(),
