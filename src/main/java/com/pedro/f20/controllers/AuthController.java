@@ -1,23 +1,39 @@
+package com.pedro.f20.controllers;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.pedro.f20.dtos.auth.UserDataComplete;
+import com.pedro.f20.dtos.auth.UserRegisterDTO;
+import com.pedro.f20.dtos.response.ResponseDTO;
+import com.pedro.f20.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @PostMapping
-    public ResponseEntity<MessageDTO> register(@RequestBody @Valid UserRegisterDTO data) {
-        UserRegisterDTO processedData = 
-            data.isAdmin() ? data : new UserRegisterDTO(
-                data.user(),
-                data.name(),
-                data.ra(),
-                data.groupId(),
-                data.unitId(),
-                data.permissionMenu(),
-                data.tag(),
-                data.isAdmin()
-            );
 
-        UserDataComplete userCreated = service.create(processedData, (User) user);
-        MessageDTO messageDto = createMessageUtil.createMessage(201, userCreated);
-        return ResponseEntity.ok().body(messageDto);
+    private final AuthService service;
+
+    public AuthController(AuthService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<ResponseDTO> register(@RequestBody UserRegisterDTO data) {
+        UserRegisterDTO processedData = new UserRegisterDTO(
+            data.username(),
+            data.email(),
+            data.password()
+        );
+
+        UserDataComplete userCreated = service.create(processedData);
+        return ResponseEntity.ok().body(new ResponseDTO(
+            "User created successfully",
+            userCreated,
+            201
+        ));
     }
 }
