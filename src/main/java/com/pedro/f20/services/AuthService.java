@@ -42,11 +42,20 @@ public class AuthService {
         User user = userRepository.findByEmail(data.email())
             .orElseThrow(() -> new IllegalArgumentException("User not found with the provided email"));
 
+        if (user.getIsActive()) {
+            throw new IllegalArgumentException("Email is already verified");
+        }
+
+        if (user.getEmailCode().getIsUsed()) {
+            throw new IllegalArgumentException("Verification code has already been used");
+        }
+
         if (user.getEmailCode().getEmailCode().equals(data.code()) == false) {
             throw new IllegalArgumentException("Invalid verification code");
         }
 
         user.setIsActive(true);
+        user.getEmailCode().setIsUsed(true);
         userRepository.save(user);
     }
 }

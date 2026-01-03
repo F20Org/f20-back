@@ -22,6 +22,7 @@ public class SecurityConfigurations {
                 req.requestMatchers("/online").permitAll();
                 req.requestMatchers("/auth/login").permitAll();
                 req.requestMatchers("/auth/register").permitAll();
+                req.requestMatchers("/auth/verify-email").permitAll();
                 req.anyRequest().authenticated();
             })
             .build();
