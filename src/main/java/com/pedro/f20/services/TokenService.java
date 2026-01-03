@@ -1,5 +1,6 @@
 package com.pedro.f20.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -10,6 +11,13 @@ import com.pedro.f20.entities.User;
 
 @Service
 public class TokenService {
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.issuer}")
+    private String issuer;
+    
     public String generateToken(User user){
         try{
             var algorithm = Algorithm.HMAC256("12345678");
