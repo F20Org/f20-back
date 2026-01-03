@@ -10,10 +10,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.pedro.f20.middlewares.CorsFilter;
+import com.pedro.f20.middlewares.SecurityFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
+
+    private SecurityFilter securityFilter;
+    private CorsFilter corsFilter;
+
+    public SecurityConfigurations(SecurityFilter securityFilter, CorsFilter corsFilter) {
+        this.securityFilter = securityFilter;
+        this.corsFilter = corsFilter;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf(csrf -> csrf.disable())
@@ -25,6 +38,8 @@ public class SecurityConfigurations {
                 req.requestMatchers("/auth/verify-email").permitAll();
                 req.anyRequest().authenticated();
             })
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }
 

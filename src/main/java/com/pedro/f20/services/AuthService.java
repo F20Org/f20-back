@@ -1,5 +1,8 @@
 package com.pedro.f20.services;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.pedro.f20.dtos.auth.UserDataComplete;
@@ -11,7 +14,7 @@ import com.pedro.f20.jobs.mail.MailProducer;
 import com.pedro.f20.repositories.UserRepository;
 
 @Service
-public class AuthService {
+public class AuthService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MailProducer mailProducer;
@@ -19,6 +22,13 @@ public class AuthService {
     public AuthService(UserRepository userRepository, MailProducer mailProducer) {
         this.userRepository = userRepository;
         this.mailProducer = mailProducer;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with the provided email"));
+        return user;
     }
 
     public UserDataComplete create(UserRegisterDTO data) {
