@@ -20,8 +20,21 @@ services:
     networks:
       - springboot-network
 
+  redis:
+    image: redis:alpine
+    container_name: redis-server
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - springboot-network
+
 volumes:
   postgres_data:
+  redis_data:
 
 networks:
   springboot-network:
