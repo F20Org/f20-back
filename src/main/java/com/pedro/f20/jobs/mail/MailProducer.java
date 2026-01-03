@@ -37,4 +37,10 @@ public class MailProducer {
         String body = "Hello " + user.username() + ",\n\nThank you for registering at F20.\n\nBest regards,\nF20 Team";
         sendEmail(user.email(), subject, body);
     }
+
+    public void sendEmailVerificationCode(UserDataComplete user, String code) {
+        String subject = "Verify your email for F20, " + user.username() + "!";
+        String body = "Hello " + user.username() + ",\n\nPlease use the following code to verify your email address: " + code + "\n\nBest regards,\nF20 Team";
+        sendEmail(user.email(), subject, body);
+    }
 }

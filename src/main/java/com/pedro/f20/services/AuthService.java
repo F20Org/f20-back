@@ -34,6 +34,7 @@ public class AuthService {
         userRepository.save(user);
 
         mailProducer.sendWelcomeEmail(user.toDto());
+        mailProducer.sendEmailVerificationCode(user.toDto(), emailCode.getEmailCode());
 
         return user.toDto();
     }
