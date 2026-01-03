@@ -2,12 +2,14 @@ package com.pedro.f20.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pedro.f20.dtos.auth.UserDataComplete;
 import com.pedro.f20.dtos.auth.UserRegisterDTO;
+import com.pedro.f20.dtos.auth.ValidadeEmailDTO;
 import com.pedro.f20.dtos.response.ResponseDTO;
 import com.pedro.f20.services.AuthService;
 
@@ -36,6 +38,16 @@ public class AuthController {
             "User created successfully",
             userCreated,
             201
+        ));
+    }
+
+    @PutMapping("/verify-email")
+    public ResponseEntity<ResponseDTO> verifyEmail(@RequestBody @Valid ValidadeEmailDTO data) {
+        service.verifyEmail(data);
+        return ResponseEntity.ok().body(new ResponseDTO(
+            "Email verified successfully",
+            null,
+            200
         ));
     }
 }

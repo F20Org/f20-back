@@ -2,16 +2,13 @@ package com.pedro.f20.entities;
 
 import java.time.LocalDateTime;
 
-import com.pedro.f20.dtos.auth.UserDataComplete;
-import com.pedro.f20.dtos.auth.UserRegisterDTO;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -20,46 +17,45 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "tb_users")
-@Entity(name = "User")
+@Table(name = "tb_email_codes")
+@Entity(name = "EmailCode")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class User {
+public class EmailCode {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-    private String email;
-    private String password;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "email_code")
+    private String emailCode;
+
+    @Column(name = "is_used")
+    private Boolean isUsed;
 
     private LocalDateTime dtcreate;
     private LocalDateTime dtupdate;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private EmailCode emailCode;
-
-    public User(UserRegisterDTO data) {
-        this.username = data.username();
-        this.email = data.email();
-        this.password = data.password();
-        this.isActive = false;
+    public EmailCode(User user) {
+        this.user = user;
+        this.emailCode = generateCode();
+        this.isUsed = false;
         this.dtcreate = LocalDateTime.now();
         this.dtupdate = LocalDateTime.now();
     }
 
-    public UserDataComplete toDto() {
-        return new UserDataComplete(
-            this.id,
-            this.username,
-            this.email,
-            this.isActive
-        );
+    private String generateCode() {
+        int length = 6;
+        StringBuilder code = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            int digit = (int)(Math.random() * 10);
+            code.append(digit);
+        }
+        return code.toString();
     }
-
 }
