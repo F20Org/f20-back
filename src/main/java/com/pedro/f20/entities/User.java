@@ -38,6 +38,9 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "is_email_verified")
+    private Boolean isEmailVerified;
+
     private LocalDateTime dtcreate;
     private LocalDateTime dtupdate;
 
@@ -48,7 +51,8 @@ public class User {
         this.username = data.username();
         this.email = data.email();
         this.password = data.password();
-        this.isActive = false;
+        this.isActive = true;
+        this.isEmailVerified = false;
         this.dtcreate = LocalDateTime.now();
         this.dtupdate = LocalDateTime.now();
     }
