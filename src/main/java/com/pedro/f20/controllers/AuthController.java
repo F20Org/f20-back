@@ -25,6 +25,15 @@ public class AuthController {
         this.service = service;
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ResponseDTO> login() {
+        return ResponseEntity.ok().body(new ResponseDTO(
+            "Login successful",
+            null,
+            200
+        ));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> register(@RequestBody @Valid UserRegisterDTO data) {
         UserRegisterDTO processedData = new UserRegisterDTO(
