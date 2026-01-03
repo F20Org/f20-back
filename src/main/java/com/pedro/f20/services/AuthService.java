@@ -58,5 +58,7 @@ public class AuthService {
         user.setIsEmailVerified(true);
         user.getEmailCode().setIsUsed(true);
         userRepository.save(user);
+
+        mailProducer.sendEmailVerifiedConfirmation(user.toDto());
     }
 }
