@@ -11,6 +11,8 @@ import com.pedro.f20.dtos.auth.UserRegisterDTO;
 import com.pedro.f20.dtos.response.ResponseDTO;
 import com.pedro.f20.services.AuthService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -22,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> register(@RequestBody UserRegisterDTO data) {
+    public ResponseEntity<ResponseDTO> register(@RequestBody @Valid UserRegisterDTO data) {
         UserRegisterDTO processedData = new UserRegisterDTO(
             data.username(),
             data.email(),

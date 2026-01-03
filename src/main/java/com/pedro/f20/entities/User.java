@@ -42,7 +42,7 @@ public class User {
         this.username = data.username();
         this.email = data.email();
         this.password = data.password();
-        this.isActive = true;
+        this.isActive = false;
         this.dtcreate = LocalDateTime.now();
         this.dtupdate = LocalDateTime.now();
     }

@@ -5,15 +5,18 @@ import org.springframework.stereotype.Service;
 import com.pedro.f20.dtos.auth.UserDataComplete;
 import com.pedro.f20.dtos.auth.UserRegisterDTO;
 import com.pedro.f20.entities.User;
+import com.pedro.f20.jobs.mail.MailProducer;
 import com.pedro.f20.repositories.UserRepository;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final MailProducer mailProducer;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, MailProducer mailProducer) {
         this.userRepository = userRepository;
+        this.mailProducer = mailProducer;
     }
 
     public UserDataComplete create(UserRegisterDTO data) {
@@ -23,6 +26,8 @@ public class AuthService {
 
         User user = new User(data);
         userRepository.save(user);
+
+        mailProducer.sendWelcomeEmail(user.toDto());
 
         return user.toDto();
     }
