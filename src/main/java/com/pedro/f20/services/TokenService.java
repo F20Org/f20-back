@@ -24,7 +24,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("API F20")
                     .withSubject(user.getEmail())
-                    .withClaim("name", user.getUsername())
+                    .withClaim("name", user.getName())
                     .sign(algorithm);
 
         } catch(JWTCreationException exception){

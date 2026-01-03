@@ -72,6 +72,10 @@ public class User implements UserDetails {
         );
     }
 
+    public String getName() {
+        return this.username;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
