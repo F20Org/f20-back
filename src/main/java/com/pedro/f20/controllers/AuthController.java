@@ -70,6 +70,16 @@ public class AuthController {
         ));
     }
 
+    @PostMapping("/resend-verification-email")
+    public ResponseEntity<ResponseDTO> resendVerificationEmail(@RequestBody String email) {
+        service.resendVerificationEmail(email);
+        return ResponseEntity.ok().body(new ResponseDTO(
+            "Verification email resent successfully",
+            null,
+            200
+        ));
+    }
+
     @PutMapping("/verify-email")
     public ResponseEntity<ResponseDTO> verifyEmail(@RequestBody @Valid ValidadeEmailDTO data) {
         service.verifyEmail(data);

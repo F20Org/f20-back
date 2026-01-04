@@ -31,6 +31,21 @@ public class AuthService implements UserDetailsService {
         return user;
     }
 
+    public void resendVerificationEmail(String email) {
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new IllegalArgumentException("User not found with the provided email"));
+
+        if (user.getIsEmailVerified()) {
+            throw new IllegalArgumentException("Email is already verified");
+        }
+
+        EmailCode newEmailCode = new EmailCode(user);
+        user.setEmailCode(newEmailCode);
+        userRepository.save(user);
+
+        mailProducer.sendEmailVerificationCode(user.toDto(), newEmailCode.getEmailCode());
+    }
+
     public UserDataComplete create(UserRegisterDTO data) {
         if (userRepository.existsByEmail(data.email())) {
             throw new IllegalArgumentException("Email already in use");
