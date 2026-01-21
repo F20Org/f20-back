@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        .container { 
+            font-family: Arial; 
+            padding: 20px; 
+        }
+
+        .header { 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background-color: #C94040;
+            padding: 24px 20px;
+        }
+        .header h2 { color: black; }
+
+        .content { 
+            background-color: #f4f4f4; 
+            padding: 10px; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 th:text="${subject}">Default Subject</h2>
+            <img th:src="@{${logoUrl}}" alt="Logo" width="100px"/>
+        </div>
+        <div class="content" th:text="${messageBody}">
+            Default text...
+        </div>
+    </div>
+</body>
+</html>

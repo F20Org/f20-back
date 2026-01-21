@@ -20,9 +20,9 @@ public class TokenService {
     
     public String generateToken(User user){
         try{
-            var algorithm = Algorithm.HMAC256("12345678");
+            var algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("API F20")
+                    .withIssuer(issuer)
                     .withSubject(user.getEmail())
                     .withClaim("name", user.getName())
                     .sign(algorithm);
@@ -34,9 +34,9 @@ public class TokenService {
 
     public String getSubject(String tokenJWT){
         try{
-            var algorithm = Algorithm.HMAC256("12345678");
+            var algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("API F20")
+                    .withIssuer(issuer)
                     .build()
                     .verify(tokenJWT)
                     .getSubject();
