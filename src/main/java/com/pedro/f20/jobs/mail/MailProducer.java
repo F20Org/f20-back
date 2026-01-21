@@ -20,9 +20,9 @@ public class MailProducer {
         this.objectMapper = objectMapper;
     }
 
-    public void sendEmail(String to, String subject, String body) {
+    public void sendEmail(String username, String to, String subject, String body) {
         try {
-            MailJob job = new MailJob(to, subject, body);
+            MailJob job = new MailJob(username, to, subject, body);
             String json = objectMapper.writeValueAsString(job);
             
             redisTemplate.opsForList().rightPush(QUEUE_NAME, json);
@@ -35,18 +35,18 @@ public class MailProducer {
     public void sendWelcomeEmail(UserDataComplete user) {
         String subject = "Welcome to F20, " + user.username() + "!";
         String body = "Hello " + user.username() + ",\n\nThank you for registering at F20.\n\nBest regards,\nF20 Team";
-        sendEmail(user.email(), subject, body);
+        sendEmail(user.username(), user.email(), subject, body);
     }
 
     public void sendEmailVerificationCode(UserDataComplete user, String code) {
         String subject = "Verify your email for F20, " + user.username() + "!";
         String body = "Hello " + user.username() + ",\n\nPlease use the following code to verify your email address: " + code + "\n\nBest regards,\nF20 Team";
-        sendEmail(user.email(), subject, body);
+        sendEmail(user.username(), user.email(), subject, body);
     }
 
     public void sendEmailVerifiedConfirmation(UserDataComplete user) {
         String subject = "Your email has been verified, " + user.username() + "!";
         String body = "Hello " + user.username() + ",\n\nYour email address has been successfully verified.\n\nBest regards,\nF20 Team";
-        sendEmail(user.email(), subject, body);
+        sendEmail(user.username(), user.email(), subject, body);
     }
 }

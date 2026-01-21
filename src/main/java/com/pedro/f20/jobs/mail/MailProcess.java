@@ -5,6 +5,7 @@ import com.pedro.f20.dtos.mail.MailJob;
 
 import jakarta.mail.internet.MimeMessage;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,9 +41,13 @@ public class MailProcess {
                 MailJob job = objectMapper.readValue(json, MailJob.class);
                 System.out.println(">>> Sending email to: " + job.to());
 
+                ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+                ClassPathResource icon = new ClassPathResource("static/images/dice.png");
+
                 Context context = new Context();
                 context.setVariable("messageBody", job.body());
                 context.setVariable("subject", job.subject());
+                context.setVariable("username", job.username());
                 String htmlContent = templateEngine.process("mail-template", context);
 
                 MimeMessage message = mailSender.createMimeMessage();
@@ -52,6 +57,8 @@ public class MailProcess {
                 helper.setSubject(job.subject());
                 helper.setText(htmlContent, true);
                 helper.setFrom("pedrohvidals@gmail.com");
+                helper.addInline("logo", logo);
+                helper.addInline("icon", icon);
 
                 mailSender.send(message);
 
