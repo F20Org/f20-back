@@ -4,5 +4,6 @@ public record MailJob (
     String username,
     String to,
     String subject,
-    String body
+    String body,
+    String verificationCode
 ) {}

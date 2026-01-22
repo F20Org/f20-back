@@ -47,6 +47,8 @@ public class MailProcess {
                 Context context = new Context();
                 context.setVariable("messageBody", job.body());
                 context.setVariable("username", job.username());
+                context.setVariable("subject", job.subject());
+                context.setVariable("verificationCode", job.verificationCode());
                 String htmlContent = templateEngine.process("mail-template", context);
 
                 MimeMessage message = mailSender.createMimeMessage();

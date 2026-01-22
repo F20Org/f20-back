@@ -35,7 +35,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout: fixed;">
                     <tr>
                         <td align="left" valign="middle" width="50%" style="word-break: break-word; overflow-wrap: break-word;">
-                            <h2 style="margin: 0; color: black; font-size: 24px; font-family: Arial, sans-serif;">
+                            <h2 th:text="${subject}" style="margin: 0; color: black; font-size: 24px; font-family: Arial, sans-serif;">
                                 Welcome to F20!
                             </h2>
                         </td>
@@ -73,6 +73,26 @@
                 <p th:text="${messageBody}" style="font-family: Arial, sans-serif; font-size: 14px; color: #333333; margin: 0;">
                     Default message body.
                 </p>
+
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr th:if="${verificationCode != null}">
+                        <td align="center" style="padding-top: 24px;">
+                            
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="center" style="background-color: #ffffff; padding: 15px 40px; border-radius: 8px; border: 1px solid #e0e0e0;">
+                                        
+                                        <h2 style="margin: 0; font-family: Arial, sans-serif; font-size: 28px; color: #C94040; letter-spacing: 4px;">
+                                            <span th:text="${verificationCode}">123456</span>
+                                        </h2>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
 
@@ -82,7 +102,7 @@
                     <tr>
                         <td align="left" valign="middle" width="50%" style="word-break: break-word; overflow-wrap: break-word;">
                             <h2 style="margin: 0; color: white; font-size: 14px; font-family: Arial, sans-serif;">
-                                Agradecemos a atenção! <br> Equipe da F20.
+                                Thank you for your attention! <br> F20 Team.
                             </h2>
                         </td>
 

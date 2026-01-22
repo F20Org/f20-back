@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pedro.f20.dtos.auth.UserDataComplete;
 import com.pedro.f20.dtos.mail.MailJob;
 
+import java.util.Optional;
+
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,9 @@ public class MailProducer {
         this.objectMapper = objectMapper;
     }
 
-    public void sendEmail(String username, String to, String subject, String body) {
+    public void sendEmail(String username, String to, String subject, String body, Optional<String> verificationCode) {
         try {
-            MailJob job = new MailJob(username, to, subject, body);
+            MailJob job = new MailJob(username, to, subject, body, verificationCode.orElse(null));
             String json = objectMapper.writeValueAsString(job);
             
             redisTemplate.opsForList().rightPush(QUEUE_NAME, json);
@@ -33,20 +35,20 @@ public class MailProducer {
     }
 
     public void sendWelcomeEmail(UserDataComplete user) {
-        String subject = "Welcome to F20, " + user.username() + "!";
-        String body = "Hello " + user.username() + ",\n\nThank you for registering at F20.\n\nBest regards,\nF20 Team";
-        sendEmail(user.username(), user.email(), subject, body);
+        String subject = "Welcome to F20!";
+        String body = "Hello " + user.username() + ",\n\nThank you for registering at F20.";
+        sendEmail(user.username(), user.email(), subject, body, Optional.empty());
     }
 
     public void sendEmailVerificationCode(UserDataComplete user, String code) {
-        String subject = "Verify your email for F20, " + user.username() + "!";
-        String body = "Hello " + user.username() + ",\n\nPlease use the following code to verify your email address: " + code + "\n\nBest regards,\nF20 Team";
-        sendEmail(user.username(), user.email(), subject, body);
+        String subject = "Verify your email for F20!";
+        String body = "Hello " + user.username() + ",\n\nPlease use the following code to verify your email address.";
+        sendEmail(user.username(), user.email(), subject, body, Optional.of(code));
     }
 
     public void sendEmailVerifiedConfirmation(UserDataComplete user) {
-        String subject = "Your email has been verified, " + user.username() + "!";
-        String body = "Hello " + user.username() + ",\n\nYour email address has been successfully verified.\n\nBest regards,\nF20 Team";
-        sendEmail(user.username(), user.email(), subject, body);
+        String subject = "Your email has been verified!";
+        String body = "Hello " + user.username() + ",\n\nYour email address has been successfully verified.";
+        sendEmail(user.username(), user.email(), subject, body, Optional.empty());
     }
 }
