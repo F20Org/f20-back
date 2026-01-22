@@ -46,7 +46,6 @@ public class MailProcess {
 
                 Context context = new Context();
                 context.setVariable("messageBody", job.body());
-                context.setVariable("subject", job.subject());
                 context.setVariable("username", job.username());
                 String htmlContent = templateEngine.process("mail-template", context);
 
