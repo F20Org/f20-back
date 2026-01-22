@@ -1,5 +1,7 @@
 package com.pedro.f20.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,6 +80,12 @@ public class AuthService implements UserDetailsService {
 
         if (user.getEmailCode().getEmailCode().equals(data.code()) == false) {
             throw new IllegalArgumentException("Invalid verification code");
+        }
+
+        LocalDateTime codeCreationTime = user.getEmailCode().getDtcreate();
+        LocalDateTime expirationTime = codeCreationTime.plusMinutes(30);
+        if (LocalDateTime.now().isAfter(expirationTime)) {
+            throw new IllegalArgumentException("Verification code has expired");
         }
 
         user.setIsEmailVerified(true);
