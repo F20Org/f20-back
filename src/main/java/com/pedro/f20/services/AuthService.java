@@ -41,8 +41,30 @@ public class AuthService implements UserDetailsService {
             throw new IllegalArgumentException("Email is already verified");
         }
 
-        EmailCode newEmailCode = new EmailCode(user);
-        user.setEmailCode(newEmailCode);
+        System.out.println("email is not verified");
+
+        EmailCode newEmailCode;
+
+        if (user.getEmailCode() != null) {
+            int length = 6;
+            StringBuilder code = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                int digit = (int)(Math.random() * 10);
+                code.append(digit);
+            }
+            String newCode = code.toString();
+
+            user.getEmailCode().setEmailCode(newCode);
+            user.getEmailCode().setIsUsed(false);
+            user.getEmailCode().setDtupdate(LocalDateTime.now());
+            user.getEmailCode().setDtcreate(LocalDateTime.now());   
+
+            newEmailCode = user.getEmailCode();
+        } else {
+            newEmailCode = new EmailCode(user);
+            user.setEmailCode(newEmailCode);
+        }
+
         userRepository.save(user);
 
         mailProducer.sendEmailVerificationCode(user.toDto(), newEmailCode.getEmailCode());

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pedro.f20.dtos.auth.ResentCodeDTO;
 import com.pedro.f20.dtos.auth.UserDataComplete;
 import com.pedro.f20.dtos.auth.UserLoginDTO;
 import com.pedro.f20.dtos.auth.UserRegisterDTO;
@@ -71,8 +72,8 @@ public class AuthController {
     }
 
     @PostMapping("/resend-verification-email")
-    public ResponseEntity<ResponseDTO> resendVerificationEmail(@RequestBody String email) {
-        service.resendVerificationEmail(email);
+    public ResponseEntity<ResponseDTO> resendVerificationEmail(@RequestBody ResentCodeDTO data) {
+        service.resendVerificationEmail(data.email());
         return ResponseEntity.ok().body(new ResponseDTO(
             "Verification email resent successfully",
             null,

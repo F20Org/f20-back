@@ -36,6 +36,7 @@ public class SecurityConfigurations {
                 req.requestMatchers("/auth/login").permitAll();
                 req.requestMatchers("/auth/register").permitAll();
                 req.requestMatchers("/auth/verify-email").permitAll();
+                req.requestMatchers("/auth/resend-verification-email").permitAll();
                 req.anyRequest().authenticated();
             })
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

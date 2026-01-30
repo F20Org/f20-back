@@ -25,6 +25,7 @@ public class TokenService {
                     .withIssuer(issuer)
                     .withSubject(user.getEmail())
                     .withClaim("name", user.getName())
+                    .withClaim("emailVerified", user.getIsEmailVerified())
                     .sign(algorithm);
 
         } catch(JWTCreationException exception){
