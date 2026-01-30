@@ -41,8 +41,6 @@ public class AuthService implements UserDetailsService {
             throw new IllegalArgumentException("Email is already verified");
         }
 
-        System.out.println("email is not verified");
-
         EmailCode newEmailCode;
 
         if (user.getEmailCode() != null) {
